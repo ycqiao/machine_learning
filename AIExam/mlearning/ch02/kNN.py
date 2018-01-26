@@ -54,3 +54,17 @@ def autoNorm(dataset):
     normDataset = dataset - tile(minVals, (numRows, 1))
     normDataset = normDataset / tile(ranges, (numRows, 1))
     return normDataset, ranges, minVals
+
+def classifyPerson():
+    resultSet = ['not at all', 'in small doess', 'in large doses']
+    
+    percentTats = float(raw_input("percentage of time spent playing video games?"))
+    ffMiles = float(raw_input('frequent filer miles earned per year?'))
+    iceCream = float(raw_input('liters of ice cream consumed per year?'))
+    
+    datingDataMat, datingLabels = file2matrix('datingTestSet2.txt')
+    normMat, ranges, minVals = autoNorm(datingDataMat)    
+    inArr = array([ffMiles, percentTats, iceCream])
+    
+    classifierResult = classify0((inArr - minVals) / ranges, normMat, datingLabels, 3)
+    print "You will probably like this person: ", resultSet[int(classifierResult) - 1]
